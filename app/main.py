@@ -1,14 +1,10 @@
 from fastapi import FastAPI
-from app.database import Base, engine
-from app.route.serie import serie 
-
-#Criar todas as entidades no banco de dados
-Base.metadata.create_all(bind=engine)
+from app.database import engine
+from app.models import serie
+from app.route.serie import router
 
 app = FastAPI()
 
-app.include_router(serie)
+serie.Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-async def health_check():
-    return {"status": "API Online"}
+app.include_router(router)
